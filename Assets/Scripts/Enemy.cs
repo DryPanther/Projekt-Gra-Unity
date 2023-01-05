@@ -9,7 +9,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float attackSpeed = 1f;
     private float canAttack;
     private Transform target;
+    public int maxHealth = 100;
+    int currentHealth;
+    void Start()
+    {
+        currentHealth = maxHealth;
 
+
+    }
     private void Update() {
         if (target != null){
             float step = speed * Time.deltaTime;
@@ -28,7 +35,21 @@ public class Enemy : MonoBehaviour
             
         }
     }
-    
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Enemy died!");
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player"){
             target = other.transform;
