@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private float moveHorizontal;
     private float moveVertical;
     private bool facingRight = true;
+    private float health = 0f;
+    [SerializeField] private float maxHealth = 100f;
     //private bool isattack;
     //private bool strongattack;
 
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         animate = gameObject.GetComponent<Animator>();
         moveSpeed = 3f;
+        health = maxHealth;
    
     }
 
@@ -48,7 +51,7 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
-        // //Sekcja odpowiedzialna za wykrywanie u¿ycia myszki do ataku (Aktualnie przeniesiona do skryptu PlayerCombat)
+        // //Sekcja odpowiedzialna za wykrywanie uï¿½ycia myszki do ataku (Aktualnie przeniesiona do skryptu PlayerCombat)
         //if (Input.GetMouseButton(0))
         //{
         //    Debug.Log("Wykonano atak");
@@ -111,6 +114,16 @@ public class PlayerController : MonoBehaviour
         currentScale.x *= -1;
 
         transform.localScale = currentScale;
+    }
+    public void UpdateHealth(float mod) {
+        health += mod;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        } else if (health <= 0f) {
+            health = 0f;
+            Debug.Log("Player Respawn");
+        }
     }
 
  

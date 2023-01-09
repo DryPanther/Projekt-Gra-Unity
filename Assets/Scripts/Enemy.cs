@@ -4,35 +4,36 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 3f;
-    [SerializeField] private float attackDamage = 10f;
-    [SerializeField] private float attackSpeed = 1f;
-    private float canAttack;
+    public Animator animate;
+    public float speed;
+    public float step;
+    public float startingSpeed = 3f;
     private Transform target;
     public int maxHealth = 100;
     int currentHealth;
+    private bool facingRight = true;
+    private float moveHorizontal;
     void Start()
     {
         currentHealth = maxHealth;
-
+        speed = startingSpeed;
 
     }
     private void Update() {
         if (target != null){
-            float step = speed * Time.deltaTime;
+            step = speed * Time.deltaTime;
             transform.position = Vector2.MoveTowards(transform.position, target.position, step);
+             moveHorizontal = target.position.x;
         }
-    }
-    private void OnCollisionStay2D(Collision2D other) {
-         if (other.gameObject.tag == "Player"){
-            if(attackSpeed <= canAttack) {
-                other.gameObject.GetComponent<PlayerHealth>().UpdateHealth(-attackDamage);
-                canAttack = 0f;
-            } else {
-                canAttack += Time.deltaTime;
-
-            }
-            
+       
+        
+        if (moveHorizontal > 0 && !facingRight)
+        {
+            Flip();
+        }
+         if (moveHorizontal < 0 && facingRight)
+        {
+            Flip();
         }
     }
     public void TakeDamage(int damage)
@@ -53,12 +54,23 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player"){
             target = other.transform;
+            animate.SetFloat("Speed", 1);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.tag == "Player"){
             target = null;
+            animate.SetFloat("Speed", 0);
         }
+    }
+    void Flip()
+    {
+        facingRight = !facingRight;
+
+        Vector2 currentScale = transform.localScale;
+        currentScale.x *= -1;
+
+        transform.localScale = currentScale;
     }
 }
