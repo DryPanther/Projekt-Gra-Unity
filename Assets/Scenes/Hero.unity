@@ -285,9 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7905d12d6aab854499a2defd8c7f6fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followSpeed: 2
-  yOffset: 1
-  target: {fileID: 1519903094}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +411,7 @@ GameObject:
   - component: {fileID: 1070547019}
   m_Layer: 10
   m_Name: Bandit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -542,9 +539,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1070547014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f86e6afc48a7dd40add4aedf2c01c7a, type: 3}
+  m_Script: {fileID: 11500000, guid: f6450d3ad9e96cd429d625e119eccd58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animate: {fileID: 0}
+  speed: 0
+  step: 0
+  startingSpeed: 3
   maxHealth: 100
 --- !u!1 &1519903089
 GameObject:
@@ -712,7 +713,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1519903089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6deb687d764f7c64ea8f9341da9e5aca, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a8129ea9ffcc5e4d833eaef2aa2bf78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1519903098
@@ -724,18 +725,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1519903089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b494a25e024747f41905e8ff163cc643, type: 3}
+  m_Script: {fileID: 11500000, guid: f21deab427e32ba4d821893d92ac1359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1519903096}
   attckPoint: {fileID: 181478916}
-  attackRange: 0.7
+  attackRange: 0.5
   enemyLayers:
     serializedVersion: 2
     m_Bits: 1024
   attackDamage: 40
   attackRate: 2
-  nextAttackTime: 1
+  nextAttackTime: 0
 --- !u!1 &1770588659
 GameObject:
   m_ObjectHideFlags: 0

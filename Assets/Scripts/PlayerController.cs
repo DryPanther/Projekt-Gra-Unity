@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     private float moveHorizontal;
     private float moveVertical;
     private bool facingRight = true;
-    private float health = 0f;
-    [SerializeField] private float maxHealth = 100f;
+    //private float health = 0f;
+    //[SerializeField] private float maxHealth = 100f;
     //private bool isattack;
     //private bool strongattack;
 
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         animate = gameObject.GetComponent<Animator>();
         moveSpeed = 3f;
-        health = maxHealth;
+        //health = maxHealth;
    
     }
 
@@ -115,16 +115,16 @@ public class PlayerController : MonoBehaviour
 
         transform.localScale = currentScale;
     }
-    public void UpdateHealth(float mod) {
-        health += mod;
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        } else if (health <= 0f) {
-            health = 0f;
-            Debug.Log("Player Respawn");
-        }
-    }
+    //public void UpdateHealth(float mod) {
+    //    health += mod;
+    //    if (health > maxHealth)
+    //    {
+    //        health = maxHealth;
+    //    } else if (health <= 0f) {
+    //        health = 0f;
+    //        Debug.Log("Player Respawn");
+    //    }
+    //}
 
  
    

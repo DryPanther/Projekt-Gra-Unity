@@ -18,7 +18,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void Start()
     {
-
+        Debug.Log("Hello");
     }
     void Update()
     {
