@@ -22,7 +22,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void Update()
     {
-        //Sekcja odpowiedzialna za wykrywanie u¿ycia myszki do ataku
+        //Sekcja odpowiedzialna za wykrywanie uï¿½ycia myszki do ataku
         if (Time.time >= nextAttackTime)
         {
 
@@ -30,13 +30,13 @@ public class PlayerCombat : MonoBehaviour
             {
                 
                 nextAttackTime = Time.time + 1f / attackRate;
-                Debug.Log("Ciêcie !");
+                Debug.Log("Ciï¿½cie !");
                 swing = true;
                 Swing();
                 swing = false;
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
 
-                foreach (Collider2D enemy in hitEnemies)
+                foreach (BoxCollider2D enemy in hitEnemies)
                 {
                     Debug.Log("Trafienie silne " + enemy.name);
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
@@ -51,15 +51,15 @@ public class PlayerCombat : MonoBehaviour
 
               
                 nextAttackTime = Time.time + 1f / attackRate;
-                Debug.Log("Pchniêcie !");
+                Debug.Log("Pchniï¿½cie !");
                 push = true;
                 Push();
                 push = false;
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
 
-                foreach (Collider2D enemy in hitEnemies)
+                foreach (BoxCollider2D enemy in hitEnemies)
                 {
-                    Debug.Log("Trafienie s³abe " + enemy.name);
+                    Debug.Log("Trafienie sï¿½abe " + enemy.name);
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage/2);
                 }
             }
