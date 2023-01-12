@@ -57,22 +57,22 @@ public class PlayerController : MonoBehaviour
         //    Debug.Log("Wykonano atak");
         //    isattack = true;
         //    Debug.Log(isattack);
-            
+
         //    animate.SetBool("Attack", (isattack));
-            
+
         //    isattack = false;
-            
+
         //    Debug.Log(isattack);
-            
+
         //} 
-            
-            
+
+
         //if (Input.GetMouseButton(1))
         //{
         //    Debug.Log("Wykonano silny atak!");
         //    strongattack = true;
         //    Debug.Log(strongattack);
-           
+
         //    strongattack = false;
         //    Debug.Log(strongattack);
         //}
@@ -80,7 +80,17 @@ public class PlayerController : MonoBehaviour
         //{
         //    Debug.Log("chamie !");
         //}
-    
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            rb2D.transform.Translate(Vector2.right * moveHorizontal * Time.deltaTime * moveSpeed);
+
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        {
+            rb2D.transform.Translate(Vector2.up * moveVertical * Time.deltaTime * moveSpeed);
+
+        }
     }
     void FixedUpdate()
     {
@@ -93,16 +103,7 @@ public class PlayerController : MonoBehaviour
         //{
         //    rb2D.AddForce(new Vector2(0f, moveVertical * moveSpeed), ForceMode2D.Impulse);
         //}
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            rb2D.transform.Translate(Vector2.right * moveHorizontal * Time.deltaTime * moveSpeed);
 
-        }
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
-        {
-            rb2D.transform.Translate(Vector2.up * moveVertical * Time.deltaTime * moveSpeed);
-         
-        }
        
     }
 
