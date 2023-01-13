@@ -72,7 +72,7 @@ public class PlayerCombat : MonoBehaviour
                 swing = false;
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
 
-                foreach (BoxCollider2D enemy in hitEnemies)
+                foreach (Collider2D enemy in hitEnemies)
                 {
                     Debug.Log("Trafienie silne " + enemy.name);
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
@@ -93,7 +93,7 @@ public class PlayerCombat : MonoBehaviour
                 push = false;
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
 
-                foreach (BoxCollider2D enemy in hitEnemies)
+                foreach (Collider2D enemy in hitEnemies)
                 {
                     Debug.Log("Trafienie s³abe " + enemy.name);
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
