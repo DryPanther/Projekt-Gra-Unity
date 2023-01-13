@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class Enemy_Attack : Enemy
 {
-
     void Update()
     {
-        
+
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag == "Player"){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
             animate.SetTrigger("Attack");
-            animate.SetFloat("Attack1",1);
+            animate.SetFloat("Attack1", 1);
             Invoke("Go", 0.7f);
         }
     }
-    private void Go(){
-            animate.SetFloat("Attack1",0);
+    private void Go()
+    {
+        animate.SetFloat("Attack1", 0);
     }
 }
