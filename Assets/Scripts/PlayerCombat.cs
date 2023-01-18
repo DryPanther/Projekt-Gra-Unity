@@ -58,7 +58,7 @@ public class PlayerCombat : MonoBehaviour
             rb2D.transform.Translate(Vector2.up * moveVertical * Time.deltaTime * moveSpeed);
 
         }
-        //Sekcja odpowiedzialna za wykrywanie u¿ycia myszki do ataku
+        //Sekcja odpowiedzialna za wykrywanie uï¿½ycia myszki do ataku
         if (Time.time >= nextAttackTime)
         {
 
@@ -66,7 +66,7 @@ public class PlayerCombat : MonoBehaviour
             {
 
                 nextAttackTime = Time.time + 1f / attackRate;
-                Debug.Log("Ciêcie !");
+                Debug.Log("Ciï¿½cie !");
                 swing = true;
                 Swing();
                 swing = false;
@@ -87,7 +87,7 @@ public class PlayerCombat : MonoBehaviour
 
 
                 nextAttackTime = Time.time + 1f / attackRate;
-                Debug.Log("Pchniêcie !");
+                Debug.Log("Pchniï¿½cie !");
                 push = true;
                 Push();
                 push = false;
@@ -95,7 +95,7 @@ public class PlayerCombat : MonoBehaviour
 
                 foreach (Collider2D enemy in hitEnemies)
                 {
-                    Debug.Log("Trafienie s³abe " + enemy.name);
+                    Debug.Log("Trafienie sï¿½abe " + enemy.name);
                     enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
                 }
             }
@@ -104,7 +104,7 @@ public class PlayerCombat : MonoBehaviour
         {
             Debug.Log("chamie !");
         }
-        //Otrzymywanie obra¿eñ
+        //Otrzymywanie obraï¿½eï¿½
         if (Time.time >= nextAttackTime)
         {
 
@@ -113,7 +113,7 @@ public class PlayerCombat : MonoBehaviour
 
 
                 nextAttackTime = Time.time + 1f / attackRate;
-                GetHit();
+                GetHit(20);
                 Debug.Log("Trafienie!");
                 Debug.Log(HitPoints);
 
@@ -136,12 +136,12 @@ public class PlayerCombat : MonoBehaviour
     {
         animator.SetTrigger("Push");
     }
-    void GetHit()
+    public void GetHit(int damage)
     {
 
         animator.SetTrigger("IsHit");
-        Debug.Log("A£A!");
-        HitPoints = HitPoints - 20;
+        Debug.Log("Aï¿½A!");
+        HitPoints = HitPoints - damage;
     }
     void Flip()
     {
