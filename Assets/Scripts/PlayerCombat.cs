@@ -20,15 +20,19 @@ public class PlayerCombat : MonoBehaviour
     private float moveHorizontal;
     private float moveVertical;
     private bool facingRight = true;
+    private bool pickSpear;
 
+   
     // Update is called once per frame
 
     private void Start()
     {
+     
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
         moveSpeed = 3f;
         HitPoints = HP;
+     
     }
     void Update()
     {
@@ -60,7 +64,7 @@ public class PlayerCombat : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)&&(pickSpear=false))
             {
                 Swing();
                 Invoke("Atak1", 0.4f);
@@ -74,6 +78,15 @@ public class PlayerCombat : MonoBehaviour
                 Push();
                 Invoke("Atak2", 0.2f);
                
+            }
+        }
+        if (Time.time >= nextAttackTime)
+        {
+
+            if (Input.GetMouseButtonDown(0)&&(pickSpear=true))
+            {
+                Swing();
+                Invoke("Atak3", 0.4f);
             }
         }
         if (Input.GetMouseButtonDown(2))
@@ -103,7 +116,22 @@ public class PlayerCombat : MonoBehaviour
         }
 
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Spear"))
+        {
 
+            pickUP();
+        }
+    }
+    public void pickUP()
+    {
+        pickSpear = true;
+        
+        Debug.Log("podniesiono wlocznie");
+        animator.SetBool("SpearPicked", true);
+        Debug.Log(pickSpear);
+    }
     void Swing()
     {
         animator.SetTrigger("Swing");
@@ -124,12 +152,12 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 1" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage/2);
         }
     }
     void Atak2()
     {
-        nextAttackTime = Time.time + 1f / attackRate;
+        nextAttackTime = Time.time + 2f / attackRate;
         Debug.Log("Atak 2!");
         push = true;
 
@@ -139,15 +167,34 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 2" + enemy.name);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage );
+        }
+    }
+    void Atak3()
+    {
+        nextAttackTime = Time.time + 1f / attackRate;
+        Debug.Log("Atak 3!");
+        push = true;
+
+        push = false;
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("Trafienie atakiem 3" + enemy.name);
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
         }
     }
     public void GetHit(int damage)
     {
 
-        animator.SetTrigger("IsHit");
-        Debug.Log("AAA!");
-        HitPoints = HitPoints - damage;
+        
+        if (HitPoints >0 && damage > 0)
+        {
+            animator.SetTrigger("IsHit");
+            Debug.Log("AAA!");
+            HitPoints = HitPoints - damage;
+        }
     }
     void Flip()
     {
@@ -172,5 +219,7 @@ public class PlayerCombat : MonoBehaviour
         if (attckPoint == null)
             return;
         Gizmos.DrawWireSphere(attckPoint.position, attackRange);
+
     }
+  
 }

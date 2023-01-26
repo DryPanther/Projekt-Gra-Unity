@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\NPC.cs" />
     <Compile Include="Assets\scrip.cs" />
     <Compile Include="Assets\Scripts\PlayerCombat.cs" />
+    <Compile Include="Assets\Spear.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
