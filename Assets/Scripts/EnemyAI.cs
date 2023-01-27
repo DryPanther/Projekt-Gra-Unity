@@ -6,14 +6,13 @@ public class EnemyAI : MonoBehaviour
 {
     public GameObject Player;
     public float startingSpeed;
-    private float speed;
+    private float speed = 0f;
     public float distance;
     public Animator animate;
     private bool facingRight = true;
     public float vision = 8;
     void Start()
     {
-        startingSpeed = 1.5f;
     }
 
     // Update is called once per frame
@@ -33,10 +32,10 @@ public class EnemyAI : MonoBehaviour
             Flip();
         }
 
-        if(distance < vision)
+        if(distance < vision && animate.GetFloat("Attack1") == 0 && animate.GetFloat("Die1") == 0)
         {
-            transform.position = Vector2.MoveTowards(this.transform.position, Player.transform.position, speed * Time.deltaTime);
             speed = startingSpeed;
+            transform.position = Vector2.MoveTowards(this.transform.position, Player.transform.position, speed * Time.deltaTime);
             animate.SetFloat("Speed", 1);
         }
         if (animate.GetFloat("Attack1") == 1 || animate.GetFloat("Die1") == 1 || distance > vision)

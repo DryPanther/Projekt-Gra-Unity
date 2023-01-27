@@ -4,36 +4,43 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject myObject;
     public Animator animate;
     public int maxHealth = 100;
     int currentHealth;
     void Start()
     {
         currentHealth = maxHealth;
-
     }
-    private void FixedUpdate() {    
+    private void Update()
+    {
+        if (currentHealth <= 0 & animate.GetFloat("Die1") == 0)
+        {
+            animate.SetTrigger("Die");
+            animate.SetFloat("Die1", 1);
+
+            Invoke("Die", 1f);
+        }
     }
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        if (damage > 0)
         {
-            animate.SetTrigger("Die");
-            animate.SetFloat("Die1",1);
-
-            Invoke("Die", 1f);
-
-        }else{
-            animate.SetTrigger("Hit");
+            currentHealth -= damage;
+            if (currentHealth > 0)
+            {
+                animate.SetTrigger("Hit");
+            }
         }
+
+
     }
     void Die()
     {
-        gameObject.active = false;
+        this.gameObject.SetActive(false);
         Debug.Log("Enemy died!");
-        
+
     }
-    
-    
+
+
 }

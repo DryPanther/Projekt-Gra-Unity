@@ -6,10 +6,11 @@ public class Enemy_Attack : Enemy
 {
     public float nextAttackTime = 0f;
     public float attackRate = 0.5f;
+    public int startingDamage;
     public int damage;
     void start()
     {
-        damage = 20;
+        damage = startingDamage;
     }
     void Update()
     {
@@ -17,7 +18,7 @@ public class Enemy_Attack : Enemy
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        damage = 20;
+        damage = startingDamage;
     }
     private void Go()
     {
@@ -25,23 +26,26 @@ public class Enemy_Attack : Enemy
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-
-        if (other.gameObject.tag == "Player")
+        if (animate.GetFloat("Die1") == 0)
         {
-            if (Time.time >= nextAttackTime)
+            if (other.gameObject.tag == "Player")
             {
-                animate.SetTrigger("Attack");
-                animate.SetFloat("Attack1", 1);
-                Invoke("Go", 0.7f);
-                if (other.gameObject.tag == "Player")
+                if (Time.time >= nextAttackTime)
                 {
-                    nextAttackTime = Time.time + 1f / attackRate;
+                    animate.SetTrigger("Attack");
+                    animate.SetFloat("Attack1", 1);
+                    Invoke("Go", 0.7f);
+                    if (other.gameObject.tag == "Player")
+                    {
+                        nextAttackTime = Time.time + 1f / attackRate;
 
-                    StartCoroutine(Swing(other));
+                        StartCoroutine(Swing(other));
 
+                    }
                 }
             }
         }
+
     }
     private void OnTriggerExit2D(Collider2D other)
     {

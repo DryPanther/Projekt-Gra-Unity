@@ -14,8 +14,8 @@ public class PlayerCombat : MonoBehaviour
     public int attackDamage = 40;
     public float attackRate = 2f;
     public float nextAttackTime = 0f;
-    public int HitPoints;
-    public int HP = 100;
+    public float HitPoints;
+    public float HP = 100;
     public float moveSpeed;
     private float moveHorizontal;
     private float moveVertical;
