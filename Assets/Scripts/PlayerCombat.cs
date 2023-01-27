@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     public Animator animator;
-    public Transform attckPoint;
+    public Transform attackPoint;
     private Rigidbody2D rb2D;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
@@ -13,7 +13,6 @@ public class PlayerCombat : MonoBehaviour
     private bool push = true;
     public int attackDamage = 40;
     public float attackRate = 2f;
-    public float nextAttackTime = 0f;
     public float HitPoints;
     public float HP = 100;
     public float moveSpeed;
@@ -21,18 +20,19 @@ public class PlayerCombat : MonoBehaviour
     private float moveVertical;
     private bool facingRight = true;
     private bool pickSpear;
+    bool canAttack = true;
 
-   
+
     // Update is called once per frame
 
     private void Start()
     {
-     
+
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
         moveSpeed = 3f;
         HitPoints = HP;
-     
+
     }
     void Update()
     {
@@ -61,31 +61,28 @@ public class PlayerCombat : MonoBehaviour
 
         }
         //Sekcja odpowiedzialna za wykrywanie u�ycia myszki do ataku
-        if (Time.time >= nextAttackTime)
+        if (animator.GetFloat("Dead1") == 0)
         {
-
-            if (Input.GetMouseButtonDown(0)&&(pickSpear=false))
+            if (Input.GetMouseButtonDown(0) && pickSpear == false && canAttack)
             {
+                canAttack = false;
                 Swing();
+                Invoke("ResetAttack", 1f);
                 Invoke("Atak1", 0.4f);
             }
-        }
-        if (Time.time >= nextAttackTime)
-        {
-
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && canAttack)
             {
+                canAttack = false;
                 Push();
+                Invoke("ResetAttack", 1f);
                 Invoke("Atak2", 0.2f);
-               
-            }
-        }
-        if (Time.time >= nextAttackTime)
-        {
 
-            if (Input.GetMouseButtonDown(0)&&(pickSpear=true))
+            }
+            if (Input.GetMouseButtonDown(0) && pickSpear == true && canAttack)
             {
+                canAttack = false;
                 Swing();
+                Invoke("ResetAttack", 0.5f);
                 Invoke("Atak3", 0.4f);
             }
         }
@@ -94,21 +91,16 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("Ej !");
         }
         //Otrzymywanie obra�e�
-        if (Time.time >= nextAttackTime)
-        {
 
             if (Input.GetKey(KeyCode.B))
             {
 
 
-                nextAttackTime = Time.time + 1f / attackRate;
                 GetHit(20);
                 Debug.Log("Trafienie!");
                 Debug.Log(HitPoints);
 
             }
-
-        }
 
         if (HitPoints <= 0)
         {
@@ -127,7 +119,7 @@ public class PlayerCombat : MonoBehaviour
     public void pickUP()
     {
         pickSpear = true;
-        
+
         Debug.Log("podniesiono wlocznie");
         animator.SetBool("SpearPicked", true);
         Debug.Log(pickSpear);
@@ -142,42 +134,39 @@ public class PlayerCombat : MonoBehaviour
     }
     void Atak1()
     {
-        nextAttackTime = Time.time + 1f / attackRate;
         Debug.Log("Atak 1");
         swing = true;
 
         swing = false;
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 1" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage/2);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
         }
     }
     void Atak2()
     {
-        nextAttackTime = Time.time + 2f / attackRate;
         Debug.Log("Atak 2!");
         push = true;
 
         push = false;
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 2" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage );
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
     }
     void Atak3()
     {
-        nextAttackTime = Time.time + 1f / attackRate;
         Debug.Log("Atak 3!");
         push = true;
 
         push = false;
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attckPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -188,8 +177,8 @@ public class PlayerCombat : MonoBehaviour
     public void GetHit(int damage)
     {
 
-        
-        if (HitPoints >0 && damage > 0)
+
+        if (HitPoints > 0 && damage > 0)
         {
             animator.SetTrigger("IsHit");
             Debug.Log("AAA!");
@@ -198,28 +187,36 @@ public class PlayerCombat : MonoBehaviour
     }
     void Flip()
     {
-        facingRight = !facingRight;
+        if (animator.GetFloat("Dead1") == 0)
+        {
+            facingRight = !facingRight;
 
-        Vector2 currentScale = transform.localScale;
-        currentScale.x *= -1;
+            Vector2 currentScale = transform.localScale;
+            currentScale.x *= -1;
 
-        transform.localScale = currentScale;
+            transform.localScale = currentScale;
+        }
     }
     void Trup()
     {
         Debug.Log("Trup.....");
         animator.SetTrigger("Dead");
-        nextAttackTime = Time.time + 100f / attackRate;
         moveSpeed = 0f;
+        animator.SetFloat("Dead1", 1);
 
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (attckPoint == null)
+        if (attackPoint == null)
             return;
-        Gizmos.DrawWireSphere(attckPoint.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 
     }
-  
+    void ResetAttack()
+    {
+        canAttack = true;
+    }
+
+
 }

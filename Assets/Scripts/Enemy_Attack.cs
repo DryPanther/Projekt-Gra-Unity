@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Enemy_Attack : Enemy
 {
-    public float nextAttackTime = 0f;
-    public float attackRate = 0.5f;
+    bool canAttack = true;
+    public float attackRate;
     public int startingDamage;
     public int damage;
     void start()
@@ -30,14 +30,15 @@ public class Enemy_Attack : Enemy
         {
             if (other.gameObject.tag == "Player")
             {
-                if (Time.time >= nextAttackTime)
+                if (canAttack)
                 {
+                    canAttack = false;
                     animate.SetTrigger("Attack");
                     animate.SetFloat("Attack1", 1);
+                    Invoke("ResetAttack", attackRate);
                     Invoke("Go", 0.7f);
                     if (other.gameObject.tag == "Player")
                     {
-                        nextAttackTime = Time.time + 1f / attackRate;
 
                         StartCoroutine(Swing(other));
 
@@ -56,5 +57,8 @@ public class Enemy_Attack : Enemy
         yield return new WaitForSeconds(0.6f);
         other.GetComponent<PlayerCombat>().GetHit(damage);
     }
-
+    void ResetAttack()
+    {
+        canAttack = true;
+    }
 }

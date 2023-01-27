@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    public PlayerCombat playerCombat;
     public GameObject Player;
     public float startingSpeed;
     private float speed = 0f;
     public float distance;
     public Animator animate;
     private bool facingRight = true;
-    public float vision = 8;
+    public float startingVision;
+    private float vision;
     void Start()
     {
     }
@@ -18,6 +20,11 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(playerCombat.GetComponent<PlayerCombat>().animator.GetFloat("Dead1") == 1){
+            vision = 0; 
+        }else{
+            vision = startingVision;
+        }
         distance = Vector2.Distance(transform.position, Player.transform.position);
         Vector2 direction = Player.transform.position - transform.position;
         direction.Normalize();
