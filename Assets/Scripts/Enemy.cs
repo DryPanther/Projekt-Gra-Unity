@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public int maxHealth = 100;
     int currentHealth;
     public string weapon;
+    public bool activeQuest;
     void Start()
     {
         currentHealth = maxHealth;
@@ -39,7 +40,10 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
-        Quest.GetComponent<Quest>().enemyNumber--;
+        if (activeQuest == true)
+        {
+            Quest.GetComponent<Quest>().enemyNumber--;
+        }
         if(weapon != null){
             Player.GetComponent<PlayerCombat>().activeWeapon = weapon;
         }
@@ -47,6 +51,7 @@ public class Enemy : MonoBehaviour
         Debug.Log("Enemy died!");
 
     }
+    
 
 
 }

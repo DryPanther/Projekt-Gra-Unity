@@ -6,8 +6,9 @@ public class PlayerCombat : MonoBehaviour
 {
     public Animator animator;
     public Transform attackPoint;
+    public Transform attackPoint2;
     private Rigidbody2D rb2D;
-    public float attackRange = 0.5f;
+    public float attackRange = 0.7f;
     public LayerMask enemyLayers;
     private bool swing = true;
     private bool push = true;
@@ -20,6 +21,7 @@ public class PlayerCombat : MonoBehaviour
     private float moveVertical;
     private bool facingRight = true;
     private bool pickSpear;
+    private bool pickSword;
     bool canAttack = true;
     public string activeWeapon;
 
@@ -67,6 +69,7 @@ public class PlayerCombat : MonoBehaviour
             switch (activeWeapon)
             {
                 case "Sword":
+                    
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
                         canAttack = false;
@@ -74,26 +77,40 @@ public class PlayerCombat : MonoBehaviour
                         Invoke("ResetAttack", 1f);
                         Invoke("Atak1", 0.4f);
                     }
-                    if (Input.GetMouseButtonDown(1) && canAttack)
-                    {
-                        canAttack = false;
-                        Push();
-                        Invoke("ResetAttack", 1f);
-                        Invoke("Atak2", 0.2f);
+                    //if (Input.GetMouseButtonDown(1) && canAttack)
+                    //{
+                    //    canAttack = false;
+                    //    Push();
+                    //    Invoke("ResetAttack", 1f);
+                    //    Invoke("Atak2", 0.2f);
 
-                    }
+                    //}
                     break;
                 case "Spear":
                     pickUP();
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
+                       
                         canAttack = false;
                         Swing();
                         Invoke("ResetAttack", 0.5f);
                         Invoke("Atak3", 0.4f);
+                      
                     }
                     break;
 
+                case "NoSpear":
+                    pickUPSword();
+                    if (Input.GetMouseButtonDown(0) && canAttack)
+                    {
+
+                        canAttack = false;
+                        Swing();
+                        Invoke("ResetAttack", 0.5f);
+                        Invoke("Atak3", 0.4f);
+
+                    }
+                    break;
                 default:
                     break;
             }
@@ -107,20 +124,21 @@ public class PlayerCombat : MonoBehaviour
         }
         //Otrzymywanie obra�e�
 
-        if (Input.GetKey(KeyCode.B))
-        {
+        //if (Input.GetKey(KeyCode.B))
+        //{
 
 
-            GetHit(20);
-            Debug.Log("Trafienie!");
-            Debug.Log(HitPoints);
+        //    GetHit(20);
+        //    Debug.Log("Trafienie!");
+        //    Debug.Log(HitPoints);
 
-        }
+        //}
 
         if (HitPoints <= 0)
         {
             Trup();
         }
+      
 
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -129,14 +147,32 @@ public class PlayerCombat : MonoBehaviour
         {
 
             pickUP();
+            
+        }
+       if (other.CompareTag("Sword"))
+        {
+
+            pickUPSword();
+
         }
     }
+ 
     public void pickUP()
     {
+       
         pickSpear = true;
 
-        Debug.Log("podniesiono wlocznie");
+        Debug.Log("podniesiono maczuge");
         animator.SetBool("SpearPicked", true);
+        Debug.Log(pickSpear);
+    }
+    public void pickUPSword()
+    {
+        
+        pickSpear = false;
+
+        Debug.Log("podniesiono miecz");
+        animator.SetBool("SpearPicked", false);
         Debug.Log(pickSpear);
     }
     void Swing()
@@ -177,6 +213,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void Atak3()
     {
+     
         Debug.Log("Atak 3!");
         push = true;
 
@@ -186,7 +223,7 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 3" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage*2);
         }
     }
     public void GetHit(int damage)
@@ -231,6 +268,7 @@ public class PlayerCombat : MonoBehaviour
         if (attackPoint == null)
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        
 
     }
     void ResetAttack()
