@@ -7,7 +7,7 @@ public class PlayerCombat : MonoBehaviour
     public Animator animator;
     public Transform attackPoint;
     private Rigidbody2D rb2D;
-    public float attackRange = 0.7f;
+    public float attackRange = 0.5f;
     public LayerMask enemyLayers;
     private bool swing = true;
     private bool push = true;
@@ -20,9 +20,6 @@ public class PlayerCombat : MonoBehaviour
     private float moveVertical;
     private bool facingRight = true;
     private bool pickSpear;
-    private bool pickSaber;
-    private bool pickSword;
-    
     bool canAttack = true;
     public string activeWeapon;
 
@@ -69,8 +66,7 @@ public class PlayerCombat : MonoBehaviour
         {
             switch (activeWeapon)
             {
-                case "Saber":
-                   
+                case "Sword":
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
                         canAttack = false;
@@ -78,39 +74,26 @@ public class PlayerCombat : MonoBehaviour
                         Invoke("ResetAttack", 1f);
                         Invoke("Atak1", 0.4f);
                     }
-                    //if (Input.GetMouseButtonDown(1) && canAttack)
-                    //{
-                    //    canAttack = false;
-                    //    Push();
-                    //    Invoke("ResetAttack", 1f);
-                    //    Invoke("Atak2", 0.2f);
+                    if (Input.GetMouseButtonDown(1) && canAttack)
+                    {
+                        canAttack = false;
+                        Push();
+                        Invoke("ResetAttack", 1f);
+                        Invoke("Atak2", 0.2f);
 
-                    //}
+                    }
                     break;
                 case "Spear":
                     pickUP();
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
-                       
                         canAttack = false;
                         Swing();
                         Invoke("ResetAttack", 0.5f);
                         Invoke("Atak3", 0.4f);
-                      
                     }
                     break;
-                case "Sword":
-                    pickUPSword();
-                    if (Input.GetMouseButtonDown(0) && canAttack)
-                    {
 
-                        canAttack = false;
-                        Swing();
-                        Invoke("ResetAttack", 0.5f);
-                        Invoke("Atak2", 0.2f);
-
-                    }
-                    break;
                 default:
                     break;
             }
@@ -124,21 +107,20 @@ public class PlayerCombat : MonoBehaviour
         }
         //Otrzymywanie obra�e�
 
-        //if (Input.GetKey(KeyCode.B))
-        //{
+        if (Input.GetKey(KeyCode.B))
+        {
 
 
-        //    GetHit(20);
-        //    Debug.Log("Trafienie!");
-        //    Debug.Log(HitPoints);
+            GetHit(20);
+            Debug.Log("Trafienie!");
+            Debug.Log(HitPoints);
 
-        //}
+        }
 
         if (HitPoints <= 0)
         {
             Trup();
         }
-      
 
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -147,37 +129,16 @@ public class PlayerCombat : MonoBehaviour
         {
 
             pickUP();
-            
         }
     }
     public void pickUP()
     {
-        attackPoint.position = attackPoint.position * 1.025f;
         pickSpear = true;
 
         Debug.Log("podniesiono wlocznie");
         animator.SetBool("SpearPicked", true);
         Debug.Log(pickSpear);
     }
-    public void pickUPSword()
-    {
-        attackPoint.position = attackPoint.position;
-        pickSword = true;
-
-        Debug.Log("podniesiono miecz");
-        animator.SetBool("SwordPicked", true);
-        Debug.Log(pickSword);
-    }
-    public void pickUPSaber()
-    {
-        attackPoint.position = attackPoint.position;
-        pickSaber = true;
-
-        Debug.Log("podniesiono szable");
-        animator.SetBool("SaberPicked", true);
-        Debug.Log(pickSaber);
-    }
-
     void Swing()
     {
         animator.SetTrigger("Swing");
@@ -216,7 +177,6 @@ public class PlayerCombat : MonoBehaviour
     }
     void Atak3()
     {
-     
         Debug.Log("Atak 3!");
         push = true;
 
@@ -271,7 +231,6 @@ public class PlayerCombat : MonoBehaviour
         if (attackPoint == null)
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-   
 
     }
     void ResetAttack()
