@@ -9,11 +9,12 @@ public class NPC : MonoBehaviour
     public GameObject DialogPanel;
     public TextMeshProUGUI Dialog;
     public string[] dialogue;
+    public string[] dialogue2;
     private int index;
     bool canTalk = true;
+    public bool Quest = false;
 
-    
-   
+
     public float wordSpeed;
     public bool playerIsClose;
 
@@ -21,58 +22,69 @@ public class NPC : MonoBehaviour
     void Update()
     {
 
-      
-            if (Input.GetKeyDown(KeyCode.E) && playerIsClose && canTalk == true)
+
+        if (Input.GetKeyDown(KeyCode.E) && playerIsClose && canTalk == true)
+        {
+            canTalk = false;
+            Invoke("ResetTalk", 0.5f);
+            if (DialogPanel.activeInHierarchy)
             {
-                canTalk = false;
-                Invoke("ResetTalk",0.5f);
-                if (DialogPanel.activeInHierarchy)
-                {
-                    zeroText();
-                    
-                }
-                else
-                {
-                    DialogPanel.SetActive(true);
-                    StartCoroutine(Typing());
-                }
+                zeroText();
+
             }
-            if (Input.GetKeyDown(KeyCode.Space) && canTalk == true)
+            else
             {
-                canTalk = false;
-                Invoke("ResetTalk",0.5f);
-                if (Dialog.text == dialogue[index])
-                {
-                    NextLine();
-                }
+                DialogPanel.SetActive(true);
+                StartCoroutine(Typing());
             }
-            
-        
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && canTalk == true)
+        {
+            canTalk = false;
+            Invoke("ResetTalk", 0.5f);
+            if (Dialog.text == dialogue[index])
+            {
+                NextLine();
+            }
+        }
+
+
     }
 
 
-    public  void zeroText()
+    public void zeroText()
     {
         Dialog.text = "";
-        index= 0;
+        index = 0;
         DialogPanel.SetActive(false);
     }
 
     IEnumerator Typing()
     {
-        foreach (char letter in dialogue[index].ToCharArray()) 
+        if (Quest == false)
         {
-            Dialog.text += letter;
-            yield return new WaitForSeconds(wordSpeed);        
+            foreach (char letter in dialogue[index].ToCharArray())
+            {
+                Dialog.text += letter;
+                yield return new WaitForSeconds(wordSpeed);
+            }
+        }
+        if (Quest == true)
+        {
+            foreach (char letter in dialogue2[index].ToCharArray())
+            {
+                Dialog.text += letter;
+                yield return new WaitForSeconds(wordSpeed);
+            }
         }
     }
 
     public void NextLine()
     {
-      
-        if (index < dialogue.Length-1)
+
+        if (index < dialogue.Length - 1)
         {
-            
+
             index++;
             Dialog.text = "";
             StartCoroutine(Typing());
@@ -87,7 +99,7 @@ public class NPC : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerIsClose= true;
+            playerIsClose = true;
         }
     }
 

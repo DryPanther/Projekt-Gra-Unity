@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public GameObject myObject;
+    public GameObject Quest;
+    public GameObject Player;
     public Animator animate;
     public int maxHealth = 100;
     int currentHealth;
@@ -38,8 +39,9 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
+        Quest.GetComponent<Quest>().enemyNumber--;
         if(weapon != null){
-            myObject.GetComponent<PlayerCombat>().activeWeapon = weapon;
+            Player.GetComponent<PlayerCombat>().activeWeapon = weapon;
         }
         this.gameObject.SetActive(false);
         Debug.Log("Enemy died!");
