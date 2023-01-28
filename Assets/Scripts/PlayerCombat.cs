@@ -218,7 +218,12 @@ public class PlayerCombat : MonoBehaviour
         animator.SetTrigger("Dead");
         moveSpeed = 0f;
         animator.SetFloat("Dead1", 1);
+        PlayerDeath();
+    }
 
+    private void PlayerDeath() {
+        LevelManager.instance.GameOver();
+        gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
