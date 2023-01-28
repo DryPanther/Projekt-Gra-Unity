@@ -21,6 +21,7 @@ public class PlayerCombat : MonoBehaviour
     private bool facingRight = true;
     private bool pickSpear;
     bool canAttack = true;
+    public string activeWeapon;
 
 
     // Update is called once per frame
@@ -63,28 +64,42 @@ public class PlayerCombat : MonoBehaviour
         //Sekcja odpowiedzialna za wykrywanie u�ycia myszki do ataku
         if (animator.GetFloat("Dead1") == 0)
         {
-            if (Input.GetMouseButtonDown(0) && pickSpear == false && canAttack)
+            switch (activeWeapon)
             {
-                canAttack = false;
-                Swing();
-                Invoke("ResetAttack", 1f);
-                Invoke("Atak1", 0.4f);
-            }
-            if (Input.GetMouseButtonDown(1) && canAttack)
-            {
-                canAttack = false;
-                Push();
-                Invoke("ResetAttack", 1f);
-                Invoke("Atak2", 0.2f);
+                case "Sword":
+                    if (Input.GetMouseButtonDown(0) && canAttack)
+                    {
+                        canAttack = false;
+                        Swing();
+                        Invoke("ResetAttack", 1f);
+                        Invoke("Atak1", 0.4f);
+                    }
+                    if (Input.GetMouseButtonDown(1) && canAttack)
+                    {
+                        canAttack = false;
+                        Push();
+                        Invoke("ResetAttack", 1f);
+                        Invoke("Atak2", 0.2f);
 
+                    }
+                    break;
+                case "Spear":
+                    pickUP();
+                    if (Input.GetMouseButtonDown(0) && canAttack)
+                    {
+                        canAttack = false;
+                        Swing();
+                        Invoke("ResetAttack", 0.5f);
+                        Invoke("Atak3", 0.4f);
+                    }
+                    break;
+
+                default:
+                    break;
             }
-            if (Input.GetMouseButtonDown(0) && pickSpear == true && canAttack)
-            {
-                canAttack = false;
-                Swing();
-                Invoke("ResetAttack", 0.5f);
-                Invoke("Atak3", 0.4f);
-            }
+
+
+
         }
         if (Input.GetMouseButtonDown(2))
         {
@@ -92,15 +107,15 @@ public class PlayerCombat : MonoBehaviour
         }
         //Otrzymywanie obra�e�
 
-            if (Input.GetKey(KeyCode.B))
-            {
+        if (Input.GetKey(KeyCode.B))
+        {
 
 
-                GetHit(20);
-                Debug.Log("Trafienie!");
-                Debug.Log(HitPoints);
+            GetHit(20);
+            Debug.Log("Trafienie!");
+            Debug.Log(HitPoints);
 
-            }
+        }
 
         if (HitPoints <= 0)
         {

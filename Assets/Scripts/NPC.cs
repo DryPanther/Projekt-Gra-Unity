@@ -10,6 +10,7 @@ public class NPC : MonoBehaviour
     public TextMeshProUGUI Dialog;
     public string[] dialogue;
     private int index;
+    bool canTalk = true;
 
     
    
@@ -21,9 +22,10 @@ public class NPC : MonoBehaviour
     {
 
       
-            if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
+            if (Input.GetKeyDown(KeyCode.E) && playerIsClose && canTalk == true)
             {
-                
+                canTalk = false;
+                Invoke("ResetTalk",0.5f);
                 if (DialogPanel.activeInHierarchy)
                 {
                     zeroText();
@@ -35,8 +37,10 @@ public class NPC : MonoBehaviour
                     StartCoroutine(Typing());
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && canTalk == true)
             {
+                canTalk = false;
+                Invoke("ResetTalk",0.5f);
                 if (Dialog.text == dialogue[index])
                 {
                     NextLine();
@@ -94,5 +98,9 @@ public class NPC : MonoBehaviour
             playerIsClose = false;
             zeroText();
         }
+    }
+    void ResetTalk()
+    {
+        canTalk = true;
     }
 }

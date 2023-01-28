@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public Animator animate;
     public int maxHealth = 100;
     int currentHealth;
+    public string weapon;
     void Start()
     {
         currentHealth = maxHealth;
@@ -37,6 +38,9 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
+        if(weapon != null){
+            myObject.GetComponent<PlayerCombat>().activeWeapon = weapon;
+        }
         this.gameObject.SetActive(false);
         Debug.Log("Enemy died!");
 
