@@ -87,7 +87,9 @@ public class PlayerCombat : MonoBehaviour
                     //}
                     break;
                 case "Spear":
+                if(animator.GetBool("SpearPicked") == false){
                     pickUP();
+                }
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
                        
@@ -99,18 +101,6 @@ public class PlayerCombat : MonoBehaviour
                     }
                     break;
 
-                case "NoSpear":
-                    pickUPSword();
-                    if (Input.GetMouseButtonDown(0) && canAttack)
-                    {
-
-                        canAttack = false;
-                        Swing();
-                        Invoke("ResetAttack", 0.5f);
-                        Invoke("Atak3", 0.4f);
-
-                    }
-                    break;
                 default:
                     break;
             }
@@ -145,13 +135,13 @@ public class PlayerCombat : MonoBehaviour
     {
         if (other.CompareTag("Spear"))
         {
-
+            activeWeapon = "Spear";
             pickUP();
             
         }
        if (other.CompareTag("Sword"))
         {
-
+            activeWeapon = "Sword";
             pickUPSword();
 
         }
