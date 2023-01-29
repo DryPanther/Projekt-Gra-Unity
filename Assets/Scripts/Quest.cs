@@ -6,14 +6,19 @@ public class Quest : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject myObject;
-    public Collider2D[] range;
     public int enemyNumber;
 
     // Update is called once per frame
-    private void Start() {
-        foreach (Collider2D enemy in range)
+    private void Start()
+    {
+        Vector2 boxSize = new Vector2(200, 200);
+        Collider2D[] hitColliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0);
+        foreach (Collider2D collider in hitColliders)
         {
-            enemyNumber++;
+            if (collider.gameObject.tag == "Enemy")
+            {
+                enemyNumber++;
+            }
         }
     }
     void Update()
@@ -21,9 +26,11 @@ public class Quest : MonoBehaviour
         if (enemyNumber == 0)
         {
             myObject.GetComponent<NPC>().Quest = true;
-        }else{
+        }
+        else
+        {
             myObject.GetComponent<NPC>().Quest = false;
         }
     }
-    
+
 }

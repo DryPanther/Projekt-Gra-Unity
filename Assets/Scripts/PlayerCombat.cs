@@ -15,7 +15,7 @@ public class PlayerCombat : MonoBehaviour
     public int attackDamage = 40;
     public float attackRate = 2f;
     public float HitPoints;
-    public float HP = 100;
+    public float HP;
     public float moveSpeed;
     private float moveHorizontal;
     private float moveVertical;
@@ -69,9 +69,13 @@ public class PlayerCombat : MonoBehaviour
             switch (activeWeapon)
             {
                 case "Sword":
-                    
+                    attackDamage = 40;
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
+                        if (animator.GetBool("SwordPicked") == false)
+                        {
+                            pickUPSword();
+                        }
                         canAttack = false;
                         Swing();
                         Invoke("ResetAttack", 1f);
@@ -87,17 +91,19 @@ public class PlayerCombat : MonoBehaviour
                     //}
                     break;
                 case "Spear":
-                if(animator.GetBool("SpearPicked") == false){
-                    pickUP();
-                }
+                    attackDamage = 80;
+                    if (animator.GetBool("SpearPicked") == false)
+                    {
+                        pickUP();
+                    }
                     if (Input.GetMouseButtonDown(0) && canAttack)
                     {
-                       
+
                         canAttack = false;
                         Swing();
-                        Invoke("ResetAttack", 0.5f);
+                        Invoke("ResetAttack", 2f);
                         Invoke("Atak3", 0.4f);
-                      
+
                     }
                     break;
 
@@ -128,7 +134,7 @@ public class PlayerCombat : MonoBehaviour
         {
             Trup();
         }
-      
+
 
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -137,19 +143,19 @@ public class PlayerCombat : MonoBehaviour
         {
             activeWeapon = "Spear";
             pickUP();
-            
+
         }
-       if (other.CompareTag("Sword"))
+        if (other.CompareTag("Sword"))
         {
             activeWeapon = "Sword";
             pickUPSword();
 
         }
     }
- 
+
     public void pickUP()
     {
-       
+
         pickSpear = true;
 
         Debug.Log("podniesiono maczuge");
@@ -158,7 +164,7 @@ public class PlayerCombat : MonoBehaviour
     }
     public void pickUPSword()
     {
-        
+
         pickSpear = false;
 
         Debug.Log("podniesiono miecz");
@@ -184,7 +190,7 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 1" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage / 2);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
     }
     void Atak2()
@@ -203,7 +209,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void Atak3()
     {
-     
+
         Debug.Log("Atak 3!");
         push = true;
 
@@ -213,7 +219,7 @@ public class PlayerCombat : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("Trafienie atakiem 3" + enemy.name);
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage*2);
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
         }
     }
     public void GetHit(int damage)
@@ -248,7 +254,8 @@ public class PlayerCombat : MonoBehaviour
         PlayerDeath();
     }
 
-    private void PlayerDeath() {
+    private void PlayerDeath()
+    {
         LevelManager.instance.GameOver();
         gameObject.SetActive(false);
     }
@@ -258,7 +265,7 @@ public class PlayerCombat : MonoBehaviour
         if (attackPoint == null)
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-        
+
 
     }
     void ResetAttack()

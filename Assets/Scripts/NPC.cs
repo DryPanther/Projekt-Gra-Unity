@@ -6,13 +6,14 @@ using TMPro;
 
 public class NPC : MonoBehaviour
 {
+    public GameObject Player;
     public GameObject DialogPanel;
     public TextMeshProUGUI Dialog;
     public string[] dialogue;
     public string[] dialogue2;
     private int index;
     bool canTalk = true;
-    public bool Quest = false;
+    public bool Quest;
 
 
     public float wordSpeed;
@@ -73,6 +74,7 @@ public class NPC : MonoBehaviour
         {
             foreach (char letter in dialogue2[index].ToCharArray())
             {
+                Player.GetComponent<PlayerCombat>().HitPoints = Player.GetComponent<PlayerCombat>().HP;
                 Dialog.text += letter;
                 yield return new WaitForSeconds(wordSpeed);
             }
